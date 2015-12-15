@@ -39,5 +39,14 @@ Uploading a video file..." - (ChunkedUpload.java:118)
 [15 Dec 2015 14:12:16] INFO - "Available bytes: 1049947397" - (ChunkedUpload.java:151) 
 [15 Dec 2015 14:12:16] INFO - "Bytes read: 10240000" - (ChunkedUpload.java:159) 
 ...
+[15 Dec 2015 14:12:42] INFO - "HASH:1219480864" - (ChunkedUpload.java:144) 
+[15 Dec 2015 14:12:42] INFO - "Available bytes: 360041" - (ChunkedUpload.java:151) 
+[15 Dec 2015 14:12:42] INFO - "Bytes read: 360041" - (ChunkedUpload.java:159) 
+[15 Dec 2015 14:12:42] INFO - "was:false" - (ChunkedUpload.java:196) 
+[15 Dec 2015 14:12:43] INFO - "n chunk[1] - uploaddFileSize: 360041.0" - (ChunkedUpload.java:208) 
+[15 Dec 2015 14:12:43] INFO - "uploaded 100%" - (ChunkedUpload.java:217) 
+[15 Dec 2015 14:12:43] INFO - "HASH:1219480864" - (ChunkedUpload.java:220) 
+[15 Dec 2015 14:12:43] INFO - "
+
 Uploaded a new Video file to entry: 0_m0q60mfz" - (ChunkedUpload.java:228)
 ```
