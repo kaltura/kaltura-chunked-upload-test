@@ -22,7 +22,7 @@ $ javac -cp /path/to/Kaltura/client/classes:/path/to/supporting/classes chunkedu
 $ javac -cp /path/to/Kaltura/client/classes:/path/to/supporting/classes UploadTest.java
 
 ## Testing from CLI:
-$ java -cp /path/to/Kaltura/client/classes:/path/to/supporting/classes UploadTest <service URL> <partner ID> <partner admin secret> </path/to/large/vid/file>
+$ java -cp /path/to/Kaltura/client/classes:/path/to/supporting/classes UploadTest [service URL] [partner ID] [partner admin secret] [/path/to/large/vid/file]
 
 ## Sample output
 ```
