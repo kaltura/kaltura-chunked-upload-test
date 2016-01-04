@@ -10,7 +10,7 @@ class UploadTest
 	public static void main(String[] argv){
 		try{
 			if (argv.length < 4){
-				System.out.println("Usage: <service URL> <partner ID> <partner admin secret> </path/to/file>\n");
+				System.out.println("Usage: <service URL> <partner ID> <partner admin secret> </path/to/file> <entryId> <\n");
 				System.exit (1);
 			}
 			try{
@@ -35,7 +35,7 @@ class UploadTest
 				KalturaMediaEntry newEntry = client.getMediaService().add(entry);
 				ChunkedUpload CU = new ChunkedUpload("TAG", 10, client);
 				CU.setStartUpload(true);
-				CU.uploadMediaFileAndAttachToEmptyEntry("TAG",newEntry,argv[3]);
+				CU.uploadMediaFileAndAttachToEmptyEntry("TAG",newEntry,argv[3], false);
 			} catch (KalturaApiException e) {
 			            e.printStackTrace();
 			}

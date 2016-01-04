@@ -111,7 +111,7 @@ public class ChunkedUpload
      * @return true - file uploaded; false - file not uploaded
      *
      */
-    public boolean uploadMediaFileAndAttachToEmptyEntry(String TAG, KalturaMediaEntry entry, String pathfromURI) {
+    public boolean uploadMediaFileAndAttachToEmptyEntry(String TAG, KalturaMediaEntry entry, String pathfromURI, boolean upload) {
         log.info("\nUploading a video file...");
         readSum = 0;
         fileData = new File(pathfromURI);
@@ -220,8 +220,11 @@ public class ChunkedUpload
             try {
                 KalturaUploadedFileTokenResource fileTokenResource = new KalturaUploadedFileTokenResource();
                 fileTokenResource.token = upToken.id;
-                newEntry = client.getMediaService().addContent(entry.id, fileTokenResource);
-                
+                if(update) {
+                    newEntry = client.getMediaService().updateContent(entry.id, fileTokenResource);
+                } else {
+                    newEntry = client.getMediaService().addContent(entry.id, fileTokenResource);
+                }                
                 log.info("\nUploaded a new Video file to entry: " + newEntry.id);
             } catch (KalturaApiException e) {
                 e.printStackTrace();
