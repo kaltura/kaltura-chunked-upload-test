@@ -11,7 +11,7 @@ public class UploadTest {
 	public static void main(String[] argv){
 		try{
 			if (argv.length < 4){
-				System.out.println("Usage: <service URL> <partner ID> <partner admin secret> </path/to/file> <entryId>\n");
+				System.out.println("Usage: <service URL> <partner ID> <partner admin secret> </path/to/file> [optional entryId to update]\n");
 				System.exit (1);
 			}
 			try{

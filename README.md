@@ -24,6 +24,21 @@ $ javac -cp /path/to/Kaltura/client/classes:/path/to/supporting/classes UploadTe
 ## Testing from CLI:
 $ java -cp /path/to/Kaltura/client/classes:/path/to/supporting/classes UploadTest [service URL] [partner ID] [partner admin secret] [/path/to/large/vid/file]
 
+You can also use the run.sh wrapper.
+
+Note that to make bootstraping easier, the repository contains the following supporting JARs:
+```
+KalturaClient-3.3.1.jar
+commons-codec-1.6.jar
+commons-httpclient-3.1.jar
+commons-logging-1.1.1.jar
+httpclient-4.2.3.jar
+json-20090211.jar
+log4j-1.2.15.jar
+```
+You may want to update run.sh to use newer versions of these when available..
+
+
 ## Sample output
 ```
 Uploading a video file..." - (ChunkedUpload.java:118) 
