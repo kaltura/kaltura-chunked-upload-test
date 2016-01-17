@@ -23,11 +23,10 @@ public class UploadTest {
 				String userId = null;
 				int partnerId = Integer.parseInt(argv[1]);
 				String privileges = null;
-				//String ks = client.generateSessionV2(secret, null, KalturaSessionType.ADMIN, partnerId, 86400, "");
-				// comment the call to generateSessionV2() and uncomment the 2 lines below when working with older Kaltura server versions:
 				KalturaSessionService sessionService = client.getSessionService();
-				//String ks = sessionService.start(secret, "v2o",KalturaSessionType.USER,partnerId, 86400, "");
-				String ks = client.generateSession(secret, "v2o", KalturaSessionType.ADMIN, partnerId);
+				String ks = client.generateSessionV2(secret, null, KalturaSessionType.ADMIN, partnerId, 86400, "");
+				// comment the call to generateSessionV2() and uncomment the 2 lines below when working with older Kaltura server versions:
+				//String ks = client.generateSession(secret, "v2o", KalturaSessionType.ADMIN, partnerId);
 				client.setSessionId(ks);
 				System.out.println(ks);
 				KalturaMediaEntry newEntry = null;
