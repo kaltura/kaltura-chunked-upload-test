@@ -36,7 +36,10 @@ httpclient-4.2.3.jar
 json-20090211.jar
 log4j-1.2.15.jar
 ```
-You may want to update run.sh to use newer versions of these when available..
+You may want to update run.sh to use newer versions of these when available.
+
+The above JARs were compiled using Java 7 [1.7], if you are using a different version, you will need use JARs compiled with your version instead.
+
 
 
 ## Sample output
