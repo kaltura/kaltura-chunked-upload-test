@@ -169,6 +169,7 @@ public class ChunkedUpload
                 }
                 
             }
+            errUpload = false;
             if (fileData.length() > sizeBuf) {
                 if (remainingUploadFileSize > sizeBuf) {
                     if (addChunk(client, upToken.id, outFile, readSum != 0, false, readSum)) {
