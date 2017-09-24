@@ -158,6 +158,8 @@ public class ChunkedUpload
                     fos = new FileOutputStream(outFile);
                     fos.write(buf, 0, numRead);
                     fos.close();
+                    //reset upload attempts on success chunk upload
+                    attemptUpload = 0;
                 } catch (IOException ex) {
                     log.info("err: ", ex);
                 }
