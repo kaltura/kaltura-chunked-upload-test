@@ -46,14 +46,16 @@ public class UploadTest {
 			
 				ParallelUpload pu = new ParallelUpload(client, argv[3]);	
 				String tokenId = pu.upload();
-				KalturaUploadedFileTokenResource fileTokenResource = new KalturaUploadedFileTokenResource();
-				fileTokenResource.token = tokenId;
-				if(update == true) {
-					newEntry = client.getMediaService().updateContent(newEntry.id, fileTokenResource);
-				} else {
-					newEntry = client.getMediaService().addContent(newEntry.id, fileTokenResource);
+				if (tokenId != null) {
+					KalturaUploadedFileTokenResource fileTokenResource = new KalturaUploadedFileTokenResource();
+					fileTokenResource.token = tokenId;
+					if(update == true) {
+						newEntry = client.getMediaService().updateContent(newEntry.id, fileTokenResource);
+					} else {
+						newEntry = client.getMediaService().addContent(newEntry.id, fileTokenResource);
+					}
+					System.out.println("\nUploaded a new Video file to entry: " + newEntry.id);
 				}
-				System.out.println("\nUploaded a new Video file to entry: " + newEntry.id);
 			} catch (KalturaApiException e) {
 			            e.printStackTrace();
 			}

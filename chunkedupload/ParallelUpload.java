@@ -126,7 +126,10 @@ public class ParallelUpload {
 						stream.resetChunk(seekPos, size);
 						success = pu.addChunk(stream, true, (seekPos + size) == pu.fileSize, seekPos);
 						if (success)
+						{
+							pu.addUploadSize(size);
 							break;
+						}
 
 						chunkRetries++;
 					} while(pu.countRetries(chunkRetries));
@@ -147,6 +150,7 @@ public class ParallelUpload {
 	private long fileSize;
 	private int nextChunk = 0;
 	private int chunkCount = 0;
+	private long uploadSize = 0;
 	private KalturaClient client;
 	private KalturaUploadToken upToken;
 	private int retryCount = 0;
@@ -174,6 +178,11 @@ public class ParallelUpload {
 		return -1; 
 	}
 
+	private synchronized void addUploadSize(long size)
+	{
+		uploadSize += size;
+	}
+
 	public ParallelUpload(KalturaClient _client, String _fileName)
 	{
 		client = _client;
@@ -194,7 +203,7 @@ public class ParallelUpload {
 
 		chunkCount = (int)((fileSize + chunkSize - 1) / chunkSize);
 
-		log.info("Uploading token " + upToken.id + " " + fileSize + " in " + chunkCount + " chunks");
+		log.info("Uploading token " + upToken.id + " file size " + fileSize + " in " + chunkCount + " chunks");
 
 		// add the first byte and then parallelize the actual upload
 		addChunk(stream, false, false, 0);
@@ -214,9 +223,10 @@ public class ParallelUpload {
 		for(Thread t : threads)
 			t.join();
 
+		log.info("Uploading token " + upToken.id + " file size " + fileSize + " uploaded " + uploadSize);
 
-		return upToken.id;
-	}
+		return uploadSize == fileSize ? upToken.id : null;
+ 	}
 
     /**
      * @param ChunkedStream stream
