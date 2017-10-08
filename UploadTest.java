@@ -5,7 +5,7 @@ import com.kaltura.client.services.*;
 import com.kaltura.client.KalturaApiException;
 import com.kaltura.client.KalturaClient;
 import com.kaltura.client.KalturaConfiguration;
-import chunkedupload.ChunkedUpload;
+import chunkedupload.ParallelUpload;
 
 public class UploadTest { 
 	public static void main(String[] argv){
@@ -25,10 +25,10 @@ public class UploadTest {
 				String privileges = null;
 				KalturaSessionService sessionService = client.getSessionService();
 				String ks = client.generateSessionV2(secret, null, KalturaSessionType.ADMIN, partnerId, 86400, "");
-				// comment the call to generateSessionV2() and uncomment the 2 lines below when working with older Kaltura server versions:
-				//String ks = client.generateSession(secret, "v2o", KalturaSessionType.ADMIN, partnerId);
+
 				client.setSessionId(ks);
 				System.out.println(ks);
+
 				KalturaMediaEntry newEntry = null;
 				boolean update = false;
 				if(argv.length > 4 && argv[4] != "") {
@@ -41,10 +41,21 @@ public class UploadTest {
 					entry.mediaType = KalturaMediaType.VIDEO;
 					newEntry = client.getMediaService().add(entry);
 				}
-				
-				ChunkedUpload CU = new ChunkedUpload("TAG", 10, client);
-				CU.setStartUpload(true);				
-				CU.uploadMediaFileAndAttachToEmptyEntry("TAG",newEntry,argv[3], update);
+
+				System.out.println("\nCreate a new entry: " + newEntry.id);
+			
+				ParallelUpload pu = new ParallelUpload(client, argv[3]);	
+				String tokenId = pu.upload();
+				if (tokenId != null) {
+					KalturaUploadedFileTokenResource fileTokenResource = new KalturaUploadedFileTokenResource();
+					fileTokenResource.token = tokenId;
+					if(update == true) {
+						newEntry = client.getMediaService().updateContent(newEntry.id, fileTokenResource);
+					} else {
+						newEntry = client.getMediaService().addContent(newEntry.id, fileTokenResource);
+					}
+					System.out.println("\nUploaded a new Video file to entry: " + newEntry.id);
+				}
 			} catch (KalturaApiException e) {
 			            e.printStackTrace();
 			}
