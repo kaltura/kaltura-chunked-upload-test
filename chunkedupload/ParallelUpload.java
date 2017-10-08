@@ -135,11 +135,9 @@ public class ParallelUpload {
 					} while(pu.countRetries(chunkRetries));
 				}
 			}
-			catch (FileNotFoundException e) {
+			catch (Exception e) {
 				e.printStackTrace();
-			}
-			catch (IOException e) {
-				e.printStackTrace();
+				pu.countRetries(pu.maxChunkRetries);
 			}
 		}
 	}
