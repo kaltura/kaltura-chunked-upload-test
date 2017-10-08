@@ -78,7 +78,10 @@ public class ParallelUpload {
 			bytesLeft -= readSize;
 			return super.read(b, 0, readSize);
 		}
-		
+	
+		/*
+		 * prevent the http request from closing the file so it will be reused throughout the thread
+		 */	
 		public void close()
 		{
 		}
