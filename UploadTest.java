@@ -42,7 +42,7 @@ public class UploadTest {
 					newEntry = client.getMediaService().add(entry);
 				}
 
-				System.out.println("\nCreate a new entry: " + newEntry.id);
+				System.out.println("\nCreated a new entry: " + newEntry.id);
 			
 				ParallelUpload pu = new ParallelUpload(client, argv[3]);	
 				String tokenId = pu.upload();
