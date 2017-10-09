@@ -1,4 +1,4 @@
-# Kaltura chunked upload test
+# Kaltura parallel chunked upload test
 Simple Java code that splits a big video file into smaller chunks and uploads it to the Kaltura server using the uploadToken API.
 The code creates 5 threads to benefit from concurrent uploading of chunks. To change the number of concurrent threads, set threadCount to the desired number.
 
@@ -48,7 +48,7 @@ The above JARs were compiled using Java 7 [1.7], if you are using a different ve
 ## Sample output
 ```
 Created a new entry: 1_c308d3z5
-[09 Oct 2017 12:10:17] INFO - "Uploading token 1_a901afc179868778ee3837a2a783a502 file size 109436200 in 11 chunks" - (ParallelUpload.java:207) 
+[09 Oct 2017 12:10:17] INFO - "Uploading token 1_a901afc179868778ee383 file size 109436200 in 11 chunks" - (ParallelUpload.java:207) 
 [09 Oct 2017 12:10:17] INFO - "Thread-2: chunk 2 pos 20971520 size 10485760" - (ParallelUpload.java:127) 
 [09 Oct 2017 12:10:17] INFO - "Thread-0: chunk 0 pos 0 size 10485760" - (ParallelUpload.java:127) 
 [09 Oct 2017 12:10:17] INFO - "Thread-1: chunk 1 pos 10485760 size 10485760" - (ParallelUpload.java:127) 
@@ -60,7 +60,7 @@ Created a new entry: 1_c308d3z5
 [09 Oct 2017 12:10:27] INFO - "Thread-4: chunk 8 pos 83886080 size 10485760" - (ParallelUpload.java:127) 
 [09 Oct 2017 12:10:27] INFO - "Thread-1: chunk 9 pos 94371840 size 10485760" - (ParallelUpload.java:127) 
 [09 Oct 2017 12:10:28] INFO - "Thread-3: chunk 10 pos 104857600 size 4578600" - (ParallelUpload.java:127) 
-[09 Oct 2017 12:10:38] INFO - "Uploading token 1_a901afc179868778ee3837a2a783a502 file size 109436200 uploaded 109436200" - (ParallelUpload.java:227) 
+[09 Oct 2017 12:10:38] INFO - "Uploading token 1_a901afc179868778ee383 file size 109436200 uploaded 109436200" - (ParallelUpload.java:227) 
 
 Uploaded a new Video file to entry: 1_c308d3z5
 ```
