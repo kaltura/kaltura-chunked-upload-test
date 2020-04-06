@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -34,13 +34,15 @@ import java.io.IOException;
 import java.util.*;
 import java.lang.Math;
 
-import com.kaltura.client.IKalturaLogger;
-import com.kaltura.client.KalturaApiException;
-import com.kaltura.client.KalturaClient;
-import com.kaltura.client.KalturaConfiguration;
-import com.kaltura.client.KalturaLogger;
-import com.kaltura.client.services.KalturaUploadTokenService;
+import com.kaltura.client.APIOkRequestsExecutor;
+import com.kaltura.client.Client;
+import com.kaltura.client.ILogger;
+import com.kaltura.client.Logger;
+import com.kaltura.client.services.UploadTokenService;
+import com.kaltura.client.services.UploadTokenService.AddUploadTokenBuilder;
+import com.kaltura.client.services.UploadTokenService.UploadUploadTokenBuilder;
 import com.kaltura.client.types.*;
+import com.kaltura.client.utils.response.base.Response;
 
 public class ParallelUpload {
 
@@ -122,15 +124,23 @@ public class ParallelUpload {
 
 					int chunkRetries = 0;
 					boolean success = false;
+					boolean finalChunk = false;
 					do
 					{
-			        		log.info(String.format("%s: chunk %d pos %d size %d", threadName, i, seekPos, size));
+						log.info(String.format("%s: chunk %d pos %d size %d", threadName, i, seekPos, size));
 
 						stream.resetChunk(seekPos, size);
-						success = pu.addChunk(stream, true, (seekPos + size) == pu.fileSize, seekPos);
+						finalChunk = (seekPos + size) == pu.fileSize;	
+						while(finalChunk && chunksUploaded < chunkCount -1){
+							log.info("I will sleep because " + chunksUploaded + " and-" + Integer. toString(chunkCount -1));
+							Thread.sleep(5);
+						} 
+						success = pu.addChunk(stream, true, finalChunk, seekPos);
+						
 						if (success)
 						{
 							pu.addUploadSize(size);
+							chunksUploaded++;
 							break;
 						}
 
@@ -145,15 +155,16 @@ public class ParallelUpload {
 		}
 	}
 
-	private IKalturaLogger log = KalturaLogger.getLogger(getClass());
+	private ILogger log = Logger.getLogger(getClass());
 
 	private String fileName;
 	private long fileSize;
 	private int nextChunk = 0;
 	private int chunkCount = 0;
+	private int chunksUploaded = 0;
 	private long uploadSize = 0;
-	private KalturaClient client;
-	private KalturaUploadToken upToken;
+	private Client client;
+	private UploadToken upToken;
 	private int retryCount = 0;
 
 	public int chunkSize = 10*1024*1024;
@@ -184,13 +195,13 @@ public class ParallelUpload {
 		uploadSize += size;
 	}
 
-	public ParallelUpload(KalturaClient _client, String _fileName)
+	public ParallelUpload(Client _client, String _fileName)
 	{
 		client = _client;
 		fileName = _fileName;
 	}
 
-	public String upload() throws InterruptedException, IOException, KalturaApiException
+	public String upload() throws InterruptedException, IOException, APIException
 	{
 		File fileData = new File(fileName);
 		fileSize = fileData.length();
@@ -200,11 +211,11 @@ public class ParallelUpload {
 
 		stream.resetChunk(0, 1);
 
-		upToken = client.getUploadTokenService().add();
+		upToken = getUploadToken();
 
 		chunkCount = (int)((fileSize + chunkSize - 1) / chunkSize);
 
-		log.info("Uploading token " + upToken.id + " file size " + fileSize + " in " + chunkCount + " chunks");
+		log.info("Uploading token " + upToken.getId() + " file size " + fileSize + " in " + chunkCount + " chunks");
 
 		// add the first byte and then parallelize the actual upload
 		addChunk(stream, false, false, 0);
@@ -224,11 +235,28 @@ public class ParallelUpload {
 		for(Thread t : threads)
 			t.join();
 
-		log.info("Uploading token " + upToken.id + " file size " + fileSize + " uploaded " + uploadSize);
+		log.info("Uploading token " + upToken.getId() + " file size " + fileSize + " uploaded " + uploadSize);
 
-		return uploadSize == fileSize ? upToken.id : null;
+		return uploadSize == fileSize ? upToken.getId() : null;
  	}
 
+	private UploadToken getUploadToken() throws APIException
+	{
+		UploadToken uploadToken = new UploadToken();
+		uploadToken.setFileName(fileName);
+
+		AddUploadTokenBuilder requestBuilder = UploadTokenService.add(uploadToken);
+		Response<UploadToken> response = (Response<UploadToken>) APIOkRequestsExecutor.getExecutor().execute(requestBuilder.build(client));
+		if (response != null)
+		{
+			if (response.error != null)
+			{
+				throw response.error;
+			}
+			return response.results;
+		}
+		return null;
+	}
     /**
      * @param ChunkedStream stream
      * @param boolean resume
@@ -238,16 +266,20 @@ public class ParallelUpload {
      * @return
      */
     private boolean addChunk(ChunkedStream stream, boolean resume, boolean finalChunk, long resumeAt) throws IOException {
-        try {
-            client.getUploadTokenService().upload(upToken.id, stream, "a.dat", stream.getSize(), resume, finalChunk, resumeAt);
-		return true;
-        } catch (KalturaApiException e) {
+        try
+        {
+			UploadUploadTokenBuilder requestBuilder = UploadTokenService.upload(upToken.getId(), stream, "application/octet-stream", fileName, stream.size, resume, finalChunk, resumeAt);
+			Response<UploadToken> response = (Response<UploadToken>)APIOkRequestsExecutor.getExecutor().execute(requestBuilder.build(client));
+			if(response == null || response.error != null)
+			{
+				response.error.printStackTrace();
+				return false;
+			}
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
         }
         return false;
     }
-
-
 }
- 

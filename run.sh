@@ -13,9 +13,11 @@ if [ -n "$5" ];then
     ENTRY_ID_TO_UPDATE=$5
 fi
 
-#compile
-javac -cp .:KalturaClient-3.3.1.jar:httpclient-4.2.3.jar:commons-httpclient-3.1.jar:log4j-1.2.15.jar:json-20090211.jar UploadTest.java
+# compile
+javac -cp ./:KalturaApiClient-15.14.0-SNAPSHOT.jar chunkedupload/ParallelUpload.java
+javac -cp ./:KalturaApiClient-15.14.0-SNAPSHOT.jar UploadTest.java
 
 #run
-java -cp .:KalturaClient-3.3.1.jar:httpclient-4.2.3.jar:commons-httpclient-3.1.jar:log4j-1.2.15.jar:json-20090211.jar:commons-codec-1.6.jar:commons-logging-1.1.1.jar UploadTest $SERVICE_URL $PARTNER_ID $ADMIN_SECRET $PATH_TO_FILE $ENTRY_ID_TO_UPDATE 
+java -cp .:KalturaApiClient-15.14.0-SNAPSHOT.jar:commons-codec-1.12.jar:gson-2.8.5.jar:json-20180813.jar:kotlin-stdlib-1.3.21.jar:log4j-api-2.11.1.jar:log4j-core-2.11.1.jar:okhttp-3.14.1.jar:okio-2.2.2.jar UploadTest $SERVICE_URL $PARTNER_ID $ADMIN_SECRET $PATH_TO_FILE $ENTRY_ID_TO_UPDATE
+
 
