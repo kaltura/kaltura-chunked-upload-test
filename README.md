@@ -18,7 +18,10 @@ or from:
 https://github.com/kaltura/KalturaGeneratedAPIClientsJava
 
 When using older versions of the Kaltura server, one should run:
-\# php /opt/kaltura/app/generator/generate.php java
+```
+# php /opt/kaltura/app/generator/generate.php java
+```
+
 from the Kaltura server and then take the resulting package from /opt/kaltura/web/content/clientlibs/java
 
 $ javac -cp /path/to/Kaltura/client/classes:/path/to/supporting/classes chunkedupload/ParallelUpload.java
