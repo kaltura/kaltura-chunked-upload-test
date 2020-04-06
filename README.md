@@ -31,24 +31,23 @@ You can also use the run.sh wrapper.
 
 Note that to make bootstraping easier, the repository contains the following supporting JARs:
 ```
-KalturaClient-3.3.1.jar
-commons-codec-1.6.jar
-commons-httpclient-3.1.jar
-commons-logging-1.1.1.jar
-httpclient-4.2.3.jar
-json-20090211.jar
-log4j-1.2.15.jar
+commons-codec-1.12.jar
+gson-2.8.5.jar
+json-20180813.jar
+KalturaApiClient-15.14.0-SNAPSHOT.jar
+kotlin-stdlib-1.3.21.jar
+log4j-api-2.11.1.jar
+log4j-core-2.11.1.jar
+okhttp-3.14.1.jar
+okio-2.2.2.jar
 ```
 You may want to update run.sh to use newer versions of these when available.
-
-The above JARs were compiled using Java 7 [1.7], if you are using a different version, you will need use JARs compiled with your version instead.
-
 
 
 ## Sample output
 ```
-Created a new entry: 1_c308d3z5
-[09 Oct 2017 12:10:17] INFO - "Uploading token 1_a901afc179868778ee383 file size 109436200 in 11 chunks" - (ParallelUpload.java:207) 
+Created a new entry: 
+[09 Oct 2017 12:10:17] INFO - "Uploading token  file size 109436200 in 11 chunks" - (ParallelUpload.java:207) 
 [09 Oct 2017 12:10:17] INFO - "Thread-2: chunk 2 pos 20971520 size 10485760" - (ParallelUpload.java:127) 
 [09 Oct 2017 12:10:17] INFO - "Thread-0: chunk 0 pos 0 size 10485760" - (ParallelUpload.java:127) 
 [09 Oct 2017 12:10:17] INFO - "Thread-1: chunk 1 pos 10485760 size 10485760" - (ParallelUpload.java:127) 
@@ -60,7 +59,6 @@ Created a new entry: 1_c308d3z5
 [09 Oct 2017 12:10:27] INFO - "Thread-4: chunk 8 pos 83886080 size 10485760" - (ParallelUpload.java:127) 
 [09 Oct 2017 12:10:27] INFO - "Thread-1: chunk 9 pos 94371840 size 10485760" - (ParallelUpload.java:127) 
 [09 Oct 2017 12:10:28] INFO - "Thread-3: chunk 10 pos 104857600 size 4578600" - (ParallelUpload.java:127) 
-[09 Oct 2017 12:10:38] INFO - "Uploading token 1_a901afc179868778ee383 file size 109436200 uploaded 109436200" - (ParallelUpload.java:227) 
 
-Uploaded a new Video file to entry: 1_c308d3z5
+Uploaded Video file to entry: 
 ```
